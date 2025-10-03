@@ -12,7 +12,8 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     REFRESH_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7   # 7 days
     BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = [
-        "https://jay-two-door.vercel.app"
+        "https://jay-two-door.vercel.app",
+        "https://jay-two-door-backend.vercel.app",
     ]
     PROJECT_NAME: str = "JAY 2Door"
     JAY2DOOR_MONGODB_URI: str = config("JAY2DOOR_MONGODB_URI", cast=str)
