@@ -15,7 +15,7 @@ class Settings(BaseSettings):
         "https://jay-two-door-backend-l7ete9v77-ibirothes-projects.vercel.app/"
     ]
     PROJECT_NAME: str = "JAY 2Door"
-    MONGO_CONNECTION_STRING: str = config("JAY2DOOR_MONGODB_URI", cast=str)
+    JAY2DOOR_MONGODB_URI: str = config("JAY2DOOR_MONGODB_URI", cast=str)
     
 
     class Config:
