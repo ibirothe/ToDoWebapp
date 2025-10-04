@@ -22,13 +22,12 @@ class UserService:
         Returns:
             User: The created user instance.
         """
-        if await User.find_one(User.email == user.email):
+        if await User.find_one({"email": user.email}):
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Email already registered"
         )
     
-        # 2️⃣ Check if username already exists
         if await User.find_one(User.username == user.username):
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
