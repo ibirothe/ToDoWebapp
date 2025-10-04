@@ -5,6 +5,9 @@ from app.services.user_service import UserService
 import pymongo
 from app.models.user_model import User
 from app.api.deps.user_deps import get_current_user
+import sys
+import traceback
+
 
 user_router = APIRouter()
 
@@ -23,11 +26,24 @@ async def create_user(data: UserAuth):
         HTTPException: If a user with the same email or username already exists.
     """
     try:
-        return await UserService.create_user(data)
-    except pymongo.errors.DuplicateKeyError:
+        print(f"=== Attempting to create user: {data.email} ===", file=sys.stderr)
+        result = await UserService.create_user(data)
+        print(f"=== User created successfully ===", file=sys.stderr)
+        return result
+    except pymongo.errors.DuplicateKeyError as e:
+        print(f"=== Duplicate key error: {str(e)} ===", file=sys.stderr)
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="User with this email or username already exist"
+        )
+    except Exception as e:
+        print(f"=== UNEXPECTED ERROR ===", file=sys.stderr)
+        print(f"Error type: {type(e).__name__}", file=sys.stderr)
+        print(f"Error message: {str(e)}", file=sys.stderr)
+        traceback.print_exc(file=sys.stderr)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Internal server error: {str(e)}"
         )
 
 
